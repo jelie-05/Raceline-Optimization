@@ -3,7 +3,6 @@ matplotlib==3.3.1
 trajectory_planning_helpers==0.79
 # the following is required for minimum time optimization only
 casadi==3.6.4
-cython==0.29.36
 scipy==1.9
 scikit-image
 pandas
