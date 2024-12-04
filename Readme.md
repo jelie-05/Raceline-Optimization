@@ -56,7 +56,7 @@ Consult https://stevengong.co/notes/Raceline-Optimization.
 First, run `map_converter.ipynb`, and then run `sanity_check.ipynb` to make sure the line generated is correct.
 
 
-The code is developed with Ubuntu 20.04 LTS and Python 3.7.
+The code is developed with Ubuntu 20.04 LTS and Python 3.8.
 
 ### Solutions for possible installation problems (Windows)
 * `cvxpy`, `cython` or any other package requires a `Visual C++ compiler` -> Download the build tools for Visual Studio
