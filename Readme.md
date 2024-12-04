@@ -1,10 +1,9 @@
 # Introduction
-This repository contains algorithms that allow us to determine an optimal racing line on a race track. You can chose
+This repository contains algorithms that allow us to determine an optimal racing line on a race track. It can run directly on the NVIDIA Jetson and is tested on the NVIDIA Jetson Orin Nano with Jetpack 5.1.2. You can chose
 between several objectives:
 * Shortest path
-* Minimum curvature (with or without iterative call)
+* Minimum curvature
 * Minimum time
-* Minimum time with powertrain behavior consideration
 
 The minimum curvature line is quite near to a minimum time line in corners but will differ as soon as the car's
 acceleration limits are not exploited. However, the minimum time optimization requires a lot more parameters and takes
@@ -29,10 +28,25 @@ well.
 
 # Dependencies
 
+Install conda on your Jetson via the following commands:
 ```bash
-conda create --name raceline
+sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+cd ~/Downloads
+curl -O https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-aarch64.sh
+bash Anaconda3-2024.10-1-Linux-aarch64.sh
+```
+Check the [Anaconda Installation Instructions](https://docs.anaconda.com/anaconda/install/) to download the newer Linux aarch64 version for the Jetson.
+
+Create a new Conda environment for the Raceline generator:
+```bash
+conda create --name raceline python=3.8
 conda activate raceline
-pip install -r requirements.txt
+```
+
+Install all necessary libraries:
+```bash
+conda install jupyter setuptools=45.2.0 cython=0.29.14 numpy=1.18.1 matplotlib=3.3.1 scipy=1.3.3 scikit-image=0.18.3 scikit-learn=0.23.1 pandas=1.2.5 quadprog=0.1.12 -c conda-forge
+pip3 install --no-deps casadi==3.5.5 trajectory_planning_helpers==0.79
 ```
 
 
