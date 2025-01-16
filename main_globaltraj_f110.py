@@ -15,6 +15,7 @@ import configparser
 import pkg_resources
 import helper_funcs_glob
 from datetime import datetime
+from create_raceline import create_raceline
 
 """
 Created by:
@@ -208,7 +209,7 @@ if not (opt_type == 'mintime' and not mintime_opts["recalc_vel_profile_by_tph"])
 # save start time
 t_start = time.perf_counter()
 
-# import track
+# import track: shape [x_m, y_m, w_tr_right_m, w_tr_left_m]
 reftrack_imp = helper_funcs_glob.src.import_track.import_track(imp_opts=imp_opts,
                                                                file_path=file_paths["track_file"],
                                                                width_veh=pars["veh_params"]["width"])
@@ -376,11 +377,10 @@ if opt_type == 'mintime' and mintime_opts["reopt_mintime_solution"]:
 # ----------------------------------------------------------------------------------------------------------------------
 
 raceline_interp, a_opt, coeffs_x_opt, coeffs_y_opt, spline_inds_opt_interp, t_vals_opt_interp, s_points_opt_interp,\
-    spline_lengths_opt, el_lengths_opt_interp = tph.create_raceline.\
-    create_raceline(refline=reftrack_interp[:, :2],
-                    normvectors=normvec_normalized_interp,
-                    alpha=alpha_opt,
-                    stepsize_interp=pars["stepsize_opts"]["stepsize_interp_after_opt"])
+    spline_lengths_opt, el_lengths_opt_interp, normals_interp = create_raceline(refline=reftrack_interp[:, :2],
+                                                                                normvectors=normvec_normalized_interp,
+                                                                                alpha=alpha_opt,
+                                                                                stepsize_interp=pars["stepsize_opts"]["stepsize_interp_after_opt"])
 
 # ----------------------------------------------------------------------------------------------------------------------
 # CALCULATE HEADING AND CURVATURE --------------------------------------------------------------------------------------
