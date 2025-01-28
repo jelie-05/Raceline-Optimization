@@ -312,7 +312,7 @@ elif opt_type == 'mintime':
                     print_debug=debug,
                     plot_debug=plot_opts["mintime_plots"])
 
-    # replace a_interp if necessary
+    # replace a_interp if necessary 
     if a_interp_tmp is not None:
         a_interp = a_interp_tmp
 
@@ -377,8 +377,10 @@ if opt_type == 'mintime' and mintime_opts["reopt_mintime_solution"]:
 # ----------------------------------------------------------------------------------------------------------------------
 
 raceline_interp, a_opt, coeffs_x_opt, coeffs_y_opt, spline_inds_opt_interp, t_vals_opt_interp, s_points_opt_interp,\
-    spline_lengths_opt, el_lengths_opt_interp, normals_interp = create_raceline(refline=reftrack_interp[:, :2],
+    spline_lengths_opt, el_lengths_opt_interp, normals_interp, w_rl_right_interp, w_rl_left_interp = \
+                                                                                create_raceline(refline=reftrack_interp[:, :2],
                                                                                 normvectors=normvec_normalized_interp,
+                                                                                boundaries=reftrack_interp[:, 2:],
                                                                                 alpha=alpha_opt,
                                                                                 stepsize_interp=pars["stepsize_opts"]["stepsize_interp_after_opt"])
 
@@ -512,7 +514,10 @@ trajectory_opt = np.column_stack((s_points_opt_interp,
                                   psi_vel_opt,
                                   kappa_opt,
                                   vx_profile_opt,
-                                  ax_profile_opt))
+                                  ax_profile_opt,
+                                  normals_interp,
+                                  w_rl_right_interp,
+                                  w_rl_left_interp))
 spline_data_opt = np.column_stack((spline_lengths_opt, coeffs_x_opt, coeffs_y_opt))
 
 # create a closed race trajectory array
