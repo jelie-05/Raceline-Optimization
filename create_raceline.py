@@ -102,7 +102,7 @@ def create_raceline(refline: np.ndarray,
     norm_y_scaled = normvectors_raceline[:,1] * scale_factor
 
     # Plot the normal vectors as arrows using quiver
-    plt.quiver(raceline_cl[:, 0], raceline_cl[:, 1],
+    plt.quiver(raceline[:, 0], raceline[:, 1],
                norm_x_scaled, norm_y_scaled, angles='xy', scale_units='xy', scale=1, color='r', label="Normal Vectors")
 
     plt.legend()
