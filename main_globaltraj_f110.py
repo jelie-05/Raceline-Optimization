@@ -156,7 +156,7 @@ if opt_type == 'mintime':
 # assemble export paths
 file_paths["mintime_export"] = os.path.join(file_paths["module"], f"outputs/{MAP_NAME}", f"mintime-{TIME}")
 file_paths["traj_race_export"] = os.path.join(file_paths["module"], f"outputs/{MAP_NAME}", f"traj_race_cl-{TIME}.csv")
-# file_paths["traj_ltpl_export"] = os.path.join(file_paths["module"], "outputs", "traj_ltpl_cl.csv")
+file_paths["traj_ltpl_export"] = os.path.join(file_paths["module"], f"outputs/{MAP_NAME}", "outputs", "traj_ltpl_cl.csv")
 file_paths["lap_time_mat_export"] = os.path.join(file_paths["module"], f"outputs/{MAP_NAME}", lap_time_mat_opts["file"])
 
 # ----------------------------------------------------------------------------------------------------------------------
