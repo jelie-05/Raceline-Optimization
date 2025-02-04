@@ -77,6 +77,8 @@ def create_raceline(refline: np.ndarray,
 
     # interpolate normal vectors for evenly spaced raceline points
     # TODO: implement interpolation of normal vectors for raceline splines
+    norm_x_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), normvectors_raceline[:, 0])
+    norm_y_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), normvectors_raceline[:, 1])
     normals_interp = np.vstack((norm_x_interp, norm_y_interp)).T
     normals_interp /= np.linalg.norm(normals_interp, axis=1, keepdims=True)
 
@@ -87,12 +89,6 @@ def create_raceline(refline: np.ndarray,
     s_tot_raceline = float(np.sum(spline_lengths_raceline))
     el_lengths_raceline_interp = np.diff(s_raceline_interp)
     el_lengths_raceline_interp_cl = np.append(el_lengths_raceline_interp, s_tot_raceline - s_raceline_interp[-1])
-
-    print(f"normals_interp: {normals_interp.shape}")
-    print(f"w_new_right: {w_new_right.shape}")
-    print(f"w_new_left: {w_new_left.shape}")
-    print(f"raceline_interp: {raceline_interp.shape}")
-    print(f"w_right_interp: {w_right_interp.shape}")
 
     return raceline_interp, A_raceline, coeffs_x_raceline, coeffs_y_raceline, spline_inds_raceline_interp, \
            t_values_raceline_interp, s_raceline_interp, spline_lengths_raceline, el_lengths_raceline_interp_cl, normals_interp, w_right_interp, w_left_interp
