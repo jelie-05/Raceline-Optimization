@@ -1,7 +1,7 @@
 import numpy as np
 import trajectory_planning_helpers as tph
 import matplotlib.pyplot as plt
-from scipy.interpolate import interp1d
+from scipy.interpolate import interp1d, CubicSpline
 
 def create_raceline(refline: np.ndarray,
                     normvectors: np.ndarray,
@@ -88,8 +88,14 @@ def create_raceline(refline: np.ndarray,
     normals_interp = np.vstack((norm_x_interp, norm_y_interp)).T
     normals_interp /= np.linalg.norm(normals_interp, axis=1, keepdims=True)
 
-    w_right_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), w_new_right)
-    w_left_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), w_new_left)
+    # w_right_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), w_new_right)
+    # w_left_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), w_new_left)
+    cs_right = CubicSpline(np.linspace(0, 1, len(raceline)), w_new_right)
+    cs_left = CubicSpline(np.linspace(0, 1, len(raceline)), w_new_left)
+
+    # Evaluate the interpolated values
+    w_right_interp = cs_right(t_values_raceline_interp)
+    w_left_interp = cs_left(t_values_raceline_interp)
 
     # calculate element lengths
     s_tot_raceline = float(np.sum(spline_lengths_raceline))
