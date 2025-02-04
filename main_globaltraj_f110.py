@@ -593,3 +593,22 @@ helper_funcs_glob.src.result_plots.result_plots(plot_opts=plot_opts,
                                                 bound1_interp=bound1,
                                                 bound2_interp=bound2,
                                                 trajectory=trajectory_opt)
+
+# Check normal vectors
+plt.plot(raceline_interp[:, 0], raceline_interp[:, 1], label="Interpolated Spline Path")
+plt.axis('equal')
+
+# Scale the normal vectors for visualization
+scale_factor = 2.0  # Adjust as necessary for better visibility
+norm_x_scaled = normvec_normalized_interp[:,0] * scale_factor
+norm_y_scaled = normvec_normalized_interp[:,1] * scale_factor
+
+# Plot the normal vectors as arrows using quiver
+plt.quiver(raceline_interp[:, 0], raceline_interp[:, 1],
+            norm_x_scaled, norm_y_scaled, angles='xy', scale_units='xy', scale=1, color='r', label="Normal Vectors")
+
+plt.legend()
+plt.title("Spline Path with Normal Vectors")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.show()
