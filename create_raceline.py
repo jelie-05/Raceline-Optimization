@@ -1,7 +1,7 @@
 import numpy as np
 import trajectory_planning_helpers as tph
 import matplotlib.pyplot as plt
-
+from scipy.interpolate import interp1d
 
 def create_raceline(refline: np.ndarray,
                     normvectors: np.ndarray,
@@ -79,8 +79,12 @@ def create_raceline(refline: np.ndarray,
 
     # interpolate normal vectors for evenly spaced raceline points
     # TODO: implement interpolation of normal vectors for raceline splines
-    norm_x_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 0])
-    norm_y_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 1])
+    # norm_x_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 0])
+    # norm_y_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 1])
+    norm_x_interp = interp1d(np.linspace(0, 1, len(normvectors_raceline)),
+                         normvectors_raceline[:, 0], kind='cubic')
+    norm_y_interp = interp1d(np.linspace(0, 1, len(normvectors_raceline)),
+                            normvectors_raceline[:, 1], kind='cubic')
     normals_interp = np.vstack((norm_x_interp, norm_y_interp)).T
     normals_interp /= np.linalg.norm(normals_interp, axis=1, keepdims=True)
 
