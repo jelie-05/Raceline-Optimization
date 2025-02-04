@@ -1,5 +1,6 @@
 import numpy as np
 import trajectory_planning_helpers as tph
+import matplotlib.pyplot as plt
 
 
 def create_raceline(refline: np.ndarray,
@@ -55,9 +56,10 @@ def create_raceline(refline: np.ndarray,
     w_new_right = boundaries[:,0] - alpha 
     w_new_left = boundaries[:,1] + alpha
 
-    # calculate new splines on the basis of the raceline
+    # closed raceline for spline calculation
     raceline_cl = np.vstack((raceline, raceline[0]))
 
+    # calculate new splines on the basis of the raceline
     coeffs_x_raceline, coeffs_y_raceline, A_raceline, normvectors_raceline = tph.calc_splines.\
         calc_splines(path=raceline_cl,
                      use_dist_scaling=False)
@@ -89,6 +91,25 @@ def create_raceline(refline: np.ndarray,
     s_tot_raceline = float(np.sum(spline_lengths_raceline))
     el_lengths_raceline_interp = np.diff(s_raceline_interp)
     el_lengths_raceline_interp_cl = np.append(el_lengths_raceline_interp, s_tot_raceline - s_raceline_interp[-1])
+
+    # plot test
+    plt.plot(raceline_cl[:, 0], raceline_cl[:, 1], label="Interpolated Spline Path")
+    plt.axis('equal')
+
+    # Scale the normal vectors for visualization
+    scale_factor = 2.0  # Adjust as necessary for better visibility
+    norm_x_scaled = normvectors_raceline[:,0] * scale_factor
+    norm_y_scaled = normvectors_raceline[:,1] * scale_factor
+
+    # Plot the normal vectors as arrows using quiver
+    plt.quiver(raceline_cl[:, 0], raceline_cl[:, 1],
+               norm_x_scaled, norm_y_scaled, angles='xy', scale_units='xy', scale=1, color='r', label="Normal Vectors")
+
+    plt.legend()
+    plt.title("Spline Path with Normal Vectors")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
 
     return raceline_interp, A_raceline, coeffs_x_raceline, coeffs_y_raceline, spline_inds_raceline_interp, \
            t_values_raceline_interp, s_raceline_interp, spline_lengths_raceline, el_lengths_raceline_interp_cl, normals_interp, w_right_interp, w_left_interp
