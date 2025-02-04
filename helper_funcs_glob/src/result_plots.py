@@ -54,13 +54,13 @@ def result_plots(plot_opts: dict,
         plt.plot(veh_bound2_virt[:, 0], veh_bound2_virt[:, 1], "b", linewidth=0.5)
         plt.plot(veh_bound1_real[:, 0], veh_bound1_real[:, 1], "c", linewidth=0.5)
         plt.plot(veh_bound2_real[:, 0], veh_bound2_real[:, 1], "c", linewidth=0.5)
-        plt.plot(bound1_interp[:, 0], bound1_interp[:, 1], "k-", linewidth=0.7)
-        plt.plot(bound2_interp[:, 0], bound2_interp[:, 1], "k-", linewidth=0.7)
+        plt.plot(bound1_interp[:, 0], bound1_interp[:, 1], "k-", linewidth=0.7, label="interpolated track boundary 1")
+        plt.plot(bound2_interp[:, 0], bound2_interp[:, 1], "k-", linewidth=0.7, label="interpolated track boundary 2")
         plt.plot(trajectory[:, 1], trajectory[:, 2], "r-", linewidth=0.7)
 
         if plot_opts["imported_bounds"] and bound1_imp is not None and bound2_imp is not None:
-            plt.plot(bound1_imp[:, 0], bound1_imp[:, 1], "y-", linewidth=0.7)
-            plt.plot(bound2_imp[:, 0], bound2_imp[:, 1], "y-", linewidth=0.7)
+            plt.plot(bound1_imp[:, 0], bound1_imp[:, 1], "y-", linewidth=0.7, label="imported track boundary 1")
+            plt.plot(bound2_imp[:, 0], bound2_imp[:, 1], "y-", linewidth=0.7, label="imported track boundary 2")
 
         plt.grid()
         ax = plt.gca()
