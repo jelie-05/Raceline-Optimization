@@ -81,10 +81,12 @@ def create_raceline(refline: np.ndarray,
     # TODO: implement interpolation of normal vectors for raceline splines
     # norm_x_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 0])
     # norm_y_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 1])
-    norm_x_interp = interp1d(np.linspace(0, 1, len(normvectors_raceline)),
+    interp_func_x = interp1d(np.linspace(0, 1, len(normvectors_raceline)),
                          normvectors_raceline[:, 0], kind='cubic')
-    norm_y_interp = interp1d(np.linspace(0, 1, len(normvectors_raceline)),
+    interp_func_y = interp1d(np.linspace(0, 1, len(normvectors_raceline)),
                             normvectors_raceline[:, 1], kind='cubic')
+    norm_x_interp = interp_func_x(t_values_raceline_interp)
+    norm_y_interp = interp_func_y(t_values_raceline_interp)
     normals_interp = np.vstack((norm_x_interp, norm_y_interp)).T
     normals_interp /= np.linalg.norm(normals_interp, axis=1, keepdims=True)
 
