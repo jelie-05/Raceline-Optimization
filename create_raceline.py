@@ -76,8 +76,7 @@ def create_raceline(refline: np.ndarray,
                                       stepsize_approx=stepsize_interp)
 
     # interpolate normal vectors for evenly spaced raceline points
-    norm_x_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), normvectors[:, 0])
-    norm_y_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), normvectors[:, 1])
+    # TODO: implement interpolation of normal vectors for raceline splines
     normals_interp = np.vstack((norm_x_interp, norm_y_interp)).T
     normals_interp /= np.linalg.norm(normals_interp, axis=1, keepdims=True)
 
