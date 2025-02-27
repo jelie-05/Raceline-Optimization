@@ -26,7 +26,8 @@ This script has to be executed to generate an optimal trajectory based on a give
 F1TENTH ROS code.
 """
 # MAP_NAME = "e7_floor5_large"
-MAP_NAME = "FTMHalle"
+# MAP_NAME = "FTMHalle"
+MAP_NAME = "Map"
 
 # ----------------------------------------------------------------------------------------------------------------------
 # USER INPUT -----------------------------------------------------------------------------------------------------------
@@ -63,7 +64,7 @@ imp_opts = {"flip_imp_track": False,                # flip imported track to rev
 # 'mincurv'             minimum curvature optimization without iterative call
 # 'mincurv_iqp'         minimum curvature optimization with iterative call
 # 'mintime'             time-optimal trajectory optimization
-opt_type = 'shortest_path'
+opt_type = 'mincurv'
 
 # set mintime specific options (mintime only) --------------------------------------------------------------------------
 # tpadata:                      set individual friction map data file if desired (e.g. for varmue maps), else set None,
@@ -253,7 +254,7 @@ reftrack_interp, normvec_normalized_interp, a_interp, coeffs_x_interp, coeffs_y_
                                                 stepsize_opts=pars["stepsize_opts"],
                                                 debug=debug,
                                                 min_width=imp_opts["min_track_width"])
-
+print(f"reftrack_interp: {reftrack_interp.shape}")
 # ----------------------------------------------------------------------------------------------------------------------
 # CALL OPTIMIZATION ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
