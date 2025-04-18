@@ -50,12 +50,15 @@ def result_plots(plot_opts: dict,
         # plot track including optimized path
         plt.figure()
         plt.plot(refline[:, 0], refline[:, 1], "k--", linewidth=0.7)
+        plt.plot(refline[:, 0], refline[:, 1], marker='o', markersize=3, color='k')
         plt.plot(veh_bound1_virt[:, 0], veh_bound1_virt[:, 1], "b", linewidth=0.5)
         plt.plot(veh_bound2_virt[:, 0], veh_bound2_virt[:, 1], "b", linewidth=0.5)
         plt.plot(veh_bound1_real[:, 0], veh_bound1_real[:, 1], "c", linewidth=0.5)
         plt.plot(veh_bound2_real[:, 0], veh_bound2_real[:, 1], "c", linewidth=0.5)
         plt.plot(bound1_interp[:, 0], bound1_interp[:, 1], "k-", linewidth=2, label="interpolated track boundary 1")
         plt.plot(bound2_interp[:, 0], bound2_interp[:, 1], "k-", linewidth=2, label="interpolated track boundary 2")
+        plt.plot(bound1_interp[:,0], bound1_interp[:,1], marker='o', markersize=3, color='k')
+        plt.plot(bound2_interp[:,0], bound2_interp[:,1], marker='o', markersize=3, color='k')
         plt.plot(trajectory[:, 1], trajectory[:, 2], "r-", linewidth=0.7)
 
         if plot_opts["imported_bounds"] and bound1_imp is not None and bound2_imp is not None:

@@ -56,6 +56,16 @@ def create_raceline(refline: np.ndarray,
     w_new_right = boundaries[:,0] - alpha 
     w_new_left = boundaries[:,1] + alpha
 
+    left_track_bound = raceline - normvectors * np.expand_dims(w_new_left, 1)
+    right_track_bound = raceline + normvectors * np.expand_dims(w_new_right, 1)
+    plt.plot(raceline[:, 0], raceline[:, 1], label="Raceline")
+    plt.plot(refline[:, 0], refline[:, 1], label="Refline")
+    plt.plot(left_track_bound[:, 0], left_track_bound[:, 1], label="Left Track Bound")
+    plt.plot(right_track_bound[:, 0], right_track_bound[:, 1], label="Right Track Bound")
+    plt.title("Track before interpolation")
+    plt.legend()
+    plt.show()
+
     # closed raceline for spline calculation
     raceline_cl = np.vstack((raceline, raceline[0]))
 
@@ -78,9 +88,6 @@ def create_raceline(refline: np.ndarray,
                                       stepsize_approx=stepsize_interp)
 
     # interpolate normal vectors for evenly spaced raceline points
-    # TODO: implement interpolation of normal vectors for raceline splines
-    # norm_x_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 0])
-    # norm_y_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(normvectors_raceline)), normvectors_raceline[:, 1])
     raceline_interp_cl = np.vstack((raceline_interp, raceline_interp[0]))
     x_interp, y_interp, A_interp, normvectors_interp = tph.calc_splines.calc_splines(path=raceline_interp_cl)
     norm_x_interp = normvectors_interp[:, 0]
@@ -88,14 +95,31 @@ def create_raceline(refline: np.ndarray,
     normals_interp = np.vstack((norm_x_interp, norm_y_interp)).T
     normals_interp /= np.linalg.norm(normals_interp, axis=1, keepdims=True)
 
-    # w_right_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), w_new_right)
-    # w_left_interp = np.interp(t_values_raceline_interp, np.linspace(0, 1, len(raceline)), w_new_left)
-    cs_right = CubicSpline(np.linspace(0, 1, len(raceline)), w_new_right)
-    cs_left = CubicSpline(np.linspace(0, 1, len(raceline)), w_new_left)
+    print(f"shape of raceline_interp: {raceline_interp.shape}")
+    print(f"shape of t_values_raceline_interp: {t_values_raceline_interp.shape}")
 
-    # Evaluate the interpolated values
-    w_right_interp = cs_right(t_values_raceline_interp)
-    w_left_interp = cs_left(t_values_raceline_interp)
+    w_right_interp = np.interp(np.linspace(0, 1, len(raceline_interp_cl)), np.linspace(0, 1, len(raceline)), w_new_right)
+    w_left_interp = np.interp(np.linspace(0, 1, len(raceline_interp_cl)), np.linspace(0, 1, len(raceline)), w_new_left)
+
+    buffer = 0.1
+    w_right_interp = w_right_interp[:-1] - buffer
+    w_left_interp = w_left_interp[:-1] - buffer
+
+    print(f"shape of raceline_interp: {raceline_interp.shape}")
+    print(f"shape of w_right_interp: {w_right_interp.shape}")
+
+    left_bound_interp = raceline_interp - normals_interp * np.expand_dims(w_left_interp, 1)
+    right_bound_interp = raceline_interp + normals_interp * np.expand_dims(w_right_interp, 1)
+    
+    plt.plot(raceline_interp[:, 0], raceline_interp[:, 1], label="Interpolated Raceline")
+    plt.plot(left_bound_interp[:, 0], left_bound_interp[:, 1], label="Interpolated Left Track Bound")
+    plt.plot(right_bound_interp[:, 0], right_bound_interp[:, 1], label="Interpolated Right Track Bound")
+    plt.plot(refline[:, 0], refline[:, 1], label="Refline")
+    plt.plot(left_track_bound[:, 0], left_track_bound[:, 1], label="Left Track Bound before interpolation")
+    plt.plot(right_track_bound[:, 0], right_track_bound[:, 1], label="Right Track Bound before interpolation")
+    plt.title("Track after interpolation")
+    plt.legend()
+    plt.show()
 
     # calculate element lengths
     s_tot_raceline = float(np.sum(spline_lengths_raceline))

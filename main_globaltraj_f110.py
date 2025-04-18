@@ -27,8 +27,9 @@ F1TENTH ROS code.
 """
 # MAP_NAME = "e7_floor5_large"
 # MAP_NAME = "FTMHalle"
-MAP_NAME = "Map"
-
+# MAP_NAME = "berlin"
+# MAP_NAME = "skirk"
+MAP_NAME = "Budapest_map"
 # ----------------------------------------------------------------------------------------------------------------------
 # USER INPUT -----------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -547,6 +548,43 @@ bound1, bound2 = helper_funcs_glob.src.check_traj.\
                dragcoeff=pars["veh_params"]["dragcoeff"])
 
 # ----------------------------------------------------------------------------------------------------------------------
+# PLOT INTERP BOUNDARIES -----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print(f"raceline_interp shape: {raceline_interp.shape}")
+print(f"normals_interp shape: {normals_interp.shape}")
+print(f"w_rl_right_interp shape: {w_rl_right_interp.shape}")
+print(f"w_rl_left_interp shape: {w_rl_left_interp.shape}")
+
+stacked_data = np.column_stack((raceline_interp, w_rl_right_interp, w_rl_left_interp))
+
+# left_track_bound = raceline_interp - normals_interp * np.expand_dims(w_rl_left_interp, 1)
+# right_track_bound = raceline_interp + normals_interp * np.expand_dims(w_rl_right_interp, 1)
+
+left_track_bound, right_track_bound = helper_funcs_glob.src.check_traj.\
+    check_traj(reftrack=stacked_data,
+               reftrack_normvec_normalized=normals_interp,
+               length_veh=pars["veh_params"]["length"],
+               width_veh=pars["veh_params"]["width"],
+               debug=debug,
+               trajectory=trajectory_opt,
+               ggv=ggv,
+               ax_max_machines=ax_max_machines,
+               v_max=pars["veh_params"]["v_max"],
+               curvlim=pars["veh_params"]["curvlim"],
+               mass_veh=pars["veh_params"]["mass"],
+               dragcoeff=pars["veh_params"]["dragcoeff"])
+
+plt.plot(raceline_interp[:, 0], raceline_interp[:, 1], label="Raceline")
+plt.plot(left_track_bound[:, 0], left_track_bound[:, 1], label="Left Track Boundary")
+plt.plot(right_track_bound[:, 0], right_track_bound[:, 1], label="Right Track Boundary")
+plt.axis('equal')
+plt.legend()
+plt.title("Track Boundaries")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.show()
+
+# ----------------------------------------------------------------------------------------------------------------------
 # EXPORT ---------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -595,15 +633,11 @@ helper_funcs_glob.src.result_plots.result_plots(plot_opts=plot_opts,
                                                 bound2_interp=bound2,
                                                 trajectory=trajectory_opt)
 
-# Check normal vectors
-print(f"raceline_interp shape: {raceline_interp.shape}")
-print(f"normals_interp shape: {normals_interp.shape}")
-
 plt.plot(raceline_interp[:, 0], raceline_interp[:, 1], label="Interpolated Spline Path")
 plt.axis('equal')
 
 # Scale the normal vectors for visualization
-scale_factor = 2.0  # Adjust as necessary for better visibility
+scale_factor = 0.5 # Adjust as necessary for better visibility
 norm_x_scaled = normals_interp[:,0] * scale_factor
 norm_y_scaled = normals_interp[:,1] * scale_factor
 

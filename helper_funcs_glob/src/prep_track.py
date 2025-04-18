@@ -36,6 +36,14 @@ def prep_track(reftrack_imp: np.ndarray,
     # ------------------------------------------------------------------------------------------------------------------
 
     # smoothing and interpolating reference track
+    # reftrack_interp = tph.spline_approximation. \
+    #     spline_approximation(track=reftrack_imp,
+    #                          k_reg=reg_smooth_opts["k_reg"],
+    #                          s_reg=reg_smooth_opts["s_reg"],
+    #                          stepsize_prep=stepsize_opts["stepsize_prep"],
+    #                          stepsize_reg=stepsize_opts["stepsize_reg"],
+    #                          debug=debug)
+
     reftrack_interp = tph.spline_approximation. \
         spline_approximation(track=reftrack_imp,
                              k_reg=reg_smooth_opts["k_reg"],
